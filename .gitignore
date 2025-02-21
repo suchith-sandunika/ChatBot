@@ -1,0 +1,6 @@
+.vscode
+.qodo
+.git
+.idea
+node_modules
+.env
