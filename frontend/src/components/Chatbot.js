@@ -9,36 +9,55 @@ function Chatbot() {
   const [message, setMessage] = useState('');
   const [userInput, setUserInput] = useState([]);
   const [chatbotOutput, setChatbotOutput] = useState([]);
+  const [conversations, setConversations] = useState([]); // Stores user-input and chatbot-response pairs
 
   async function manageInput() {
-    console.log(message);
-
-    const updatedUserInput = [...userInput, message];
-    console.log(updatedUserInput);
-    setUserInput(updatedUserInput);
-    setMessage('');
-
-    console.log(message);
-    console.log(userInput);
-
-    const inputMessage = updatedUserInput[updatedUserInput.length - 1];
-    console.log('input-message', inputMessage);
-    if(inputMessage == '') {
+    if (message.trim() === '') {
         console.log('No User Input');
-    } else {
-        console.log(inputMessage);
-        await fetchResponse(inputMessage);
+        return;
     }
+
+    const userMessage = message;
+    setMessage(''); // Clear input box
+
+    // Add new user message with placeholder chatbot response
+    setConversations(prev => [...prev, { user: userMessage, bot: '...' }]);
+
+    // Fetch chatbot response
+    await fetchResponse(userMessage);
+    // console.log(message);
+
+    // const updatedUserInput = [...userInput, message];
+    // console.log(updatedUserInput);
+    // setUserInput(updatedUserInput);
+    // setMessage('');
+
+    // console.log(message);
+    // console.log(userInput);
+
+    // const inputMessage = updatedUserInput[updatedUserInput.length - 1];
+    // console.log('input-message', inputMessage);
+    // if(inputMessage == '') {
+    //     console.log('No User Input');
+    // } else {
+    //     console.log(inputMessage);
+    //     await fetchResponse(inputMessage);
+    // }
   }
 
   async function fetchResponse (input){
         try {
-            const response = await axios.post('http://localhost:7000/api/chat', {message: input});
+            const response = await axios.post('http://localhost:7000/api/chat', { message: input });
             console.log(response);
-            if(response.status == 200) {
-                const updatedOutputs = [...chatbotOutput, response.data];
-                setChatbotOutput(updatedOutputs);
-                return;
+            if(response.status === 200) {
+                // const updatedOutputs = [...chatbotOutput, response.data];
+                // setChatbotOutput(updatedOutputs);
+                // Update the last conversation entry with the bot's response
+                setConversations(prev => {
+                    const updatedConversations = [...prev];
+                    updatedConversations[updatedConversations.length - 1].bot = response.data;
+                    return updatedConversations;
+                });
             } else {
                 console.log('Error Occurred While Loading Chatbot');
                 return;
@@ -85,8 +104,29 @@ function Chatbot() {
                   </div>
               </div>
 
-              { userInput.map((input, index) => (
-                  <div className='message-bot-message'>
+              {conversations.map((conv, index) => (
+                    <div key={index} className='message-bot-message'>
+
+                        {/* User Message (New Popup) */}
+                        <div className='set2'>
+                            <input type="text" className="box3-input" value={"You"} readOnly style={{width: '45px'}}/>
+                        </div>
+                        <div className='set2'>
+                            <input type="text" className="box4-input" value={conv.user} style={{color: "white", fontSize: 12}}/>
+                        </div>
+
+                        {/* Chatbot Response (Below the User Input) */}
+                        <div className='set1'>
+                            <input type="text" className="box1-input" value={"Gamage Recruiters ChatBot"} readOnly/>
+                        </div>
+                        <div className='set1'>
+                            <input type="text" className="box2-input" value={conv.bot} readOnly/>
+                        </div>
+                    </div>
+              ))}
+
+              {/* { userInput.map((input, index) => (
+                  <div key={`user-${index}`} className='message-bot-message'>
                       <div className='set2'>
                           <input type="text" className="box3-input" value={"You"} readOnly style={{width: '45px'}}/>
                       </div>
@@ -97,7 +137,7 @@ function Chatbot() {
               ))}
 
               { chatbotOutput.map((output, index) => (
-                  <div className='message-bot-message'>
+                  <div key={`bot-${index}`} className='message-bot-message'>
                       <div className='set1'>
                           <input type="text" className="box1-input" value={"Gamage Recruiters ChatBot"} readOnly/>
                       </div>
@@ -105,7 +145,7 @@ function Chatbot() {
                           <input type="text" className="box2-input" value={output} rows={3} readOnly/>
                       </div>
                   </div>
-              ))}
+              ))} */}
 
               {/*<div className='message-bot-message'>*/}
               {/*<div className='set1'>*/}
