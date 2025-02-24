@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import '../css/Chatbot.css';
 import uploadpic from '../assets/upload.png';
 import logo from '../assets/logo.png';
@@ -7,9 +7,7 @@ import axios from "axios";
 
 function Chatbot() {
   const [message, setMessage] = useState('');
-  const [userInput, setUserInput] = useState([]);
-  const [chatbotOutput, setChatbotOutput] = useState([]);
-  const [conversations, setConversations] = useState([]); // Stores user-input and chatbot-response pairs
+  const [conversations, setConversations] = useState([]); // Stores user-input and chatbot-response pairs ...
 
   async function manageInput() {
     if (message.trim() === '') {
@@ -25,24 +23,6 @@ function Chatbot() {
 
     // Fetch chatbot response
     await fetchResponse(userMessage);
-    // console.log(message);
-
-    // const updatedUserInput = [...userInput, message];
-    // console.log(updatedUserInput);
-    // setUserInput(updatedUserInput);
-    // setMessage('');
-
-    // console.log(message);
-    // console.log(userInput);
-
-    // const inputMessage = updatedUserInput[updatedUserInput.length - 1];
-    // console.log('input-message', inputMessage);
-    // if(inputMessage == '') {
-    //     console.log('No User Input');
-    // } else {
-    //     console.log(inputMessage);
-    //     await fetchResponse(inputMessage);
-    // }
   }
 
   async function fetchResponse (input){
@@ -112,7 +92,7 @@ function Chatbot() {
                             <input type="text" className="box3-input" value={"You"} readOnly style={{width: '45px'}}/>
                         </div>
                         <div className='set2'>
-                            <input type="text" className="box4-input" value={conv.user} style={{color: "white", fontSize: 12}}/>
+                            <input type="text" className="box4-input" value={conv.user} style={{ minHeight: '40px', height: `${Math.max(40, conv.bot.length / 2)}px`, overflowY: 'auto', whiteSpace: 'nowrap', color: 'white' }} readOnly/>
                         </div>
 
                         {/* Chatbot Response (Below the User Input) */}
@@ -120,7 +100,7 @@ function Chatbot() {
                             <input type="text" className="box1-input" value={"Gamage Recruiters ChatBot"} readOnly/>
                         </div>
                         <div className='set1'>
-                            <input type="text" className="box2-input" value={conv.bot} readOnly/>
+                            <input type="text" className="box2-input" value={conv.bot} style={{ minHeight: '40px', height: `${Math.max(40, conv.bot.length / 2)}px`, overflowY: 'auto', whiteSpace: 'nowrap' }} readOnly/>
                         </div>
                     </div>
               ))}
@@ -160,13 +140,13 @@ function Chatbot() {
 
           {/* chat footer including message typing box and upload icon*/}
           <div className='chat-footer'>
-              <form action="#" className="chat-form">
-                  <input type="text" placeholder="TYPE YOUR MESSAGE...." className="message-input" required
-                         value={message} onChange={(e) => setMessage(e.target.value)}/>
-            <button type="button" onClick={manageInput}>
-                <img src={uploadpic} alt="upload" />
-            </button>
-          </form>
+                <form action="#" className="chat-form">
+                    <input type="text" placeholder="TYPE YOUR MESSAGE...." className="message-input" required
+                        value={message} onChange={(e) => setMessage(e.target.value)}/>
+                    <button type="button" onClick={manageInput}>
+                        <img src={uploadpic} alt="upload" />
+                    </button>
+                </form>
           </div>
       </div>
   </div> 

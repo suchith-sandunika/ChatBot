@@ -140,6 +140,7 @@ body{
   text-size-adjust: 100%;
   font-size: 0.8rem;
   color: white;
+  overflow-x: auto;
 }
 
 .chat-body .message-bot-message .set1 .box2-input{
@@ -155,6 +156,7 @@ body{
   margin-bottom: 10px;
   font-size: 0.7rem;
   color: white;
+  overflow-x: auto;
 }
 
 .chat-body .message-bot-message .set2 .box3-input{
@@ -170,6 +172,7 @@ body{
   margin-bottom: 10px;
   font-size: 0.7rem;
   color: white;
+  overflow-x: auto;
 }
 
 .chat-body .message-bot-message .set2 .box4-input{
@@ -183,6 +186,7 @@ body{
   border-radius: 15px;
   margin-right: 130px;
   margin-bottom: 10px;
+  overflow-x: auto;
 }
 .chat-body .message-bot-message .set1 .box4-input{
   width: 100%;
@@ -230,7 +234,6 @@ body{
 
     .chat-form .message-input {
       width: 100%;
-      max-width: 150px;
       border: none;
       outline: none;
       background: transparent;

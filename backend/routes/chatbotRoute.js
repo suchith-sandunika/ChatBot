@@ -9,14 +9,14 @@ const HF_API_KEY = process.env.HUGGING_FACE_ACCESS_TOKEN_KEY;
 const API_URL = process.env.HUGGINGFACE_MODEL2; // Free QA Model ...
 
 // ✅ Detailed company information
-const companyInfo = process.env.COMPANY_DETAILS;
+const companyInfo = process.env.COMPANY_DETAILS2;
 
 // ✅ Function to call Hugging Face model
 const queryHuggingFaceModel = async (message) => {
     const response = await axios.post(
         API_URL,
         { question: message, context: companyInfo },
-        { headers: { Authorization: Bearer `${HF_API_KEY}` } }
+        { headers: { Authorization: `Bearer ${HF_API_KEY}` } }
     );
     return response.data;
 };
