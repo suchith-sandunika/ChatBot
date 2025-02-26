@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import '../css/Chatbot.css';
 import uploadpic from '../assets/upload.png';
 import logo from '../assets/logo.png';
 import close from '../assets/close.png';
-import axios from "axios";
 
 function Chatbot() {
   const [message, setMessage] = useState('');
   const [conversations, setConversations] = useState([]); // Stores user-input and chatbot-response pairs ...
+  const [loading, setLoading] = useState(true); // State to disable UI ...
 
   async function manageInput() {
     if (message.trim() === '') {
@@ -48,10 +51,29 @@ function Chatbot() {
         }
   }
 
+  useEffect(() => {
+    const toastId = toast.info("ChatBot is Loading...", {
+        autoClose: 15000,  // 15 seconds
+        closeButton: false, // Remove close button
+        closeOnClick: false, // Prevent clicking to close
+        draggable: false, // Prevent dragging
+        progress: undefined // Hide progress bar
+      });
+  
+      // Remove toast manually after 15 seconds
+      const timeout = setTimeout(() => {
+        toast.dismiss(toastId);
+        setLoading(false); // Enable UI after 15 seconds
+      }, 15000);
+  
+      return () => clearTimeout(timeout);
+  }, [])
+
   return (
     <div className='container'>
     <p className='chat'>live chat</p>
       <div className='chatbot-popup'>
+        <ToastContainer />
           {/* chatbot page header including logo */}
           <div className='chat-header'>
               <div className='header-info'>
@@ -142,7 +164,7 @@ function Chatbot() {
           <div className='chat-footer'>
                 <form action="#" className="chat-form">
                     <input type="text" placeholder="TYPE YOUR MESSAGE...." className="message-input" required
-                        value={message} onChange={(e) => setMessage(e.target.value)}/>
+                        value={message} onChange={(e) => setMessage(e.target.value)} disabled={loading}/>
                     <button type="button" onClick={manageInput}>
                         <img src={uploadpic} alt="upload" />
                     </button>
